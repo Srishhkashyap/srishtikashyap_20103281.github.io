@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Table Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #4CAF50;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Table Page</h1>
+
+    <!-- Example Table -->
+    <table id="productTable">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Popularity</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Table content will be dynamically populated here using JavaScript -->
+        </tbody>
+    </table>
+
+    <script src="script.js"></script>
+    <script>
+        // Fetch JSON data and populate the table
+        fetch('assignment.json') // Adjust the path if needed
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.querySelector('#productTable tbody');
+
+                // Convert the object into an array of objects
+                const dataArray = Object.entries(data.products).map(([key, value]) => ({ ...value, id: key }));
+
+                // Sort data based on descending popularity
+                dataArray.sort((a, b) => b.popularity - a.popularity);
+
+                // Populate the table rows
+                dataArray.forEach(item => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td>${item.title}</td><td>${item.price}</td><td>${item.popularity}</td>`;
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching JSON:', error));
+    </script>
+</body>
+</html>
